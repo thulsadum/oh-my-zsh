@@ -31,8 +31,15 @@ function hg_prompt_info {
 patches: <patches|join( → )|pre_applied(%{$fg[yellow]%})|post_applied(%{$reset_color%})|pre_unapplied(%{$fg_bold[black]%})|post_unapplied(%{$reset_color%})>>" 2>/dev/null
 }
 
+function pacman_updates {
+	UPS=`pacman -Qqu|wc -l`
+	if [ "$UPS" != "0" ]; then
+		echo "[ updates avaible: $UPS ] "
+	fi
+}
+
 PROMPT='
-%{$fg[magenta]%}%n%{$reset_color%} at %{$fg[yellow]%}%m%{$reset_color%} in %{$fg_bold[green]%}%~%{$reset_color%}$(hg_prompt_info)$(git_prompt_info)$(repo_prompt)
+%{$fg[magenta]%}%n%{$reset_color%} at %{$fg[yellow]%}%m%{$reset_color%} $(pacman_updates)in %{$fg_bold[green]%}%~%{$reset_color%}$(hg_prompt_info)$(git_prompt_info)$(repo_prompt)
 $(virtualenv_info)$(prompt_char) '
 
 #RPROMPT='$(rvm_prompt_info)'
